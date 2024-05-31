@@ -7,17 +7,26 @@ const Button = ({ onClick, text }) => (
 )
 
 const Statistics = ({ratings}) => {
+  if (ratings.good==0 && ratings.neutral==0&& ratings.bad==0) {
+    return (
+      <div>
+        <p>No feedback given</p>
+      </div>
+    )
+  }
+  else {
 
-  return (
-    <div>
-      <h1>statistics</h1>
-      <p>good {ratings.good}</p>
-      <p>neutral {ratings.neutral}</p>
-      <p>bad {ratings.bad}</p>
-      <p>average {ratings.avg}</p>
-      <p>positive {ratings.posPercent}%</p>
-    </div>
-  )
+    return (
+      <div>
+        <h1>statistics</h1>
+        <p>good {ratings.good}</p>
+        <p>neutral {ratings.neutral}</p>
+        <p>bad {ratings.bad}</p>
+        <p>average {ratings.avg}</p>
+        <p>positive {ratings.posPercent}%</p>
+      </div>
+    )
+  }
 }
 
 const App = () => {
