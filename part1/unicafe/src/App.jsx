@@ -6,10 +6,29 @@ const Button = ({ onClick, text }) => (
   </button>
 )
 
+const Statistics = ({ratings}) => {
 
+  return (
+    <div>
+      <h1>statistics</h1>
+      <p>good {ratings.good}</p>
+      <p>neutral {ratings.neutral}</p>
+      <p>bad {ratings.bad}</p>
+      <p>average {ratings.avg}</p>
+      <p>positive {ratings.posPercent}%</p>
+    </div>
+  )
+}
 
 const App = () => {
   // save clicks of each button to its own state
+  const [ratings, setRatings] = useState({
+    good: 0,
+    neutral: 0,
+    bad: 0,
+    avg: 0,
+    posPercent: 0
+  })
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
@@ -17,30 +36,36 @@ const App = () => {
   const [posPercent, setPosPercent] = useState(0)
 
   const handleGood = () => {
-    const newGood = good + 1
-    setGood(newGood)
-    const newAvg = (newGood - bad)/(newGood + bad + neutral)
-    setAvg(newAvg)
-    const newPosPerc = newGood / (newGood + bad + neutral)
-    setPosPercent(newPosPerc)
+    const newGood = ratings.good + 1
+    const newRatings = {
+      ...ratings,
+      good: newGood,
+      avg: (newGood - ratings.bad)/(newGood + ratings.bad + ratings.neutral),
+      posPercent: (newGood / (newGood + ratings.bad + ratings.neutral)) * 100
+    }
+    setRatings(newRatings)
   }
 
   const handleNeutral = () => {
-    const newNeutral = neutral + 1
-    setNeutral(newNeutral)
-    const newAvg = (good - bad)/(good + bad + newNeutral)
-    setAvg(newAvg)
-    const newPosPerc = good / (good + bad + newNeutral)
-    setPosPercent(newPosPerc)
+    const newNeutral = ratings.neutral + 1
+    const newRatings = {
+      ...ratings,
+      neutral: newNeutral,
+      avg: (ratings.good - ratings.bad)/(ratings.good + ratings.bad + newNeutral),
+      posPercent: (ratings.good / (ratings.good + ratings.bad + newNeutral)) * 100
+    }
+    setRatings(newRatings)
   }
 
   const handleBad = () => {
-    const newBad = bad + 1
-    setBad(newBad)
-    const newAvg = (good - newBad)/(good + newBad + neutral)
-    setAvg(newAvg)
-    const newPosPerc = good / (good + newBad + neutral)
-    setPosPercent(newPosPerc)
+    const newBad = ratings.bad + 1
+    const newRatings = {
+      ...ratings,
+      bad: newBad,
+      avg: (ratings.good - newBad)/(ratings.good + newBad + ratings.neutral),
+      posPercent: (ratings.good / (ratings.good + newBad + ratings.neutral)) * 100
+    }
+    setRatings(newRatings)
   }
 
   return (
@@ -49,12 +74,7 @@ const App = () => {
       <Button onClick={handleGood} text="good"/>
       <Button onClick={handleNeutral} text="Neutral"/>
       <Button onClick={handleBad} text="Bad"/>
-      <h1>statistics</h1>
-      <p>good {good}</p>
-      <p>neutral {neutral}</p>
-      <p>bad {bad}</p>
-      <p>average {avg}</p>
-      <p>positive {posPercent}%</p>
+      <Statistics ratings={ratings}/>
     </div>
   )
 }
